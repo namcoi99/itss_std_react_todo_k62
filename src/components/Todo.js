@@ -27,6 +27,12 @@ function Todo() {
     /* テストコード 終了 */
   ]);
   
+  const [filter, setFilter] = React.useState('ALL')
+  
+  const handleFilter = (e, status) => {
+    setFilter(status)
+  }
+  
   const handleChange = checked => {
     const newItems = items.map(item => {
       if(item.key === checked.key) {
@@ -40,6 +46,20 @@ function Todo() {
   const handleKeyDown = (text) => {
     putItems([...items,{key: getKey(), text: text, done: false}]);
   }
+  
+  const filterdItems = items.filter(item => {
+    if(filter === 'ALL') return true;
+    if(filter === 'DONE') return item.done;
+    if(filter === 'TODO') return !item.done;
+  })
+  
+  const displayedFilteredItems = filterdItems.map(item => (
+      <TodoItem
+        key={item.key}
+        item={item}
+        checkDone={handleChange}
+      />
+    ))
 
   return (
     <div className="panel">
@@ -49,13 +69,8 @@ function Todo() {
       <Input
         handleKeyDown={handleKeyDown}
       />
-      {items.map(item => (
-        <TodoItem
-          key={item.key}
-          item={item}
-          checkDone={handleChange}
-        />
-      ))}
+      <Filter filter={filter} handleFilter={handleFilter}/>
+      {displayedFilteredItems}
       <div className="panel-block">
         {items.length} items
       </div>
