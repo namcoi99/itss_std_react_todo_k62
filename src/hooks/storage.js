@@ -18,7 +18,7 @@ function useStorage() {
   useEffect(() => {
     const data = localStorage.getItem(STORAGE_KEY);
     if(!data) {
-      localStorage.setItem(STORAGE_KEY,JSON.stringify());
+      localStorage.setItem(STORAGE_KEY,JSON.stringify([]));
     } else {
       setItems(JSON.parse(data));
     }
